@@ -11,6 +11,9 @@
 			"helm": "latest",
 			"minikube": "none"
 		},
+        "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
+            "plugins": "z"
+        },
 		"./local-features/copy-kube-config": {}
 	},
 	"remoteEnv": {

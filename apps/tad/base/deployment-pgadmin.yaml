@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl-pgadmin
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 5050
+      containers:
+        - image: dpage/pgadmin4:8.7
+          name: pgadmin
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            limits:
+              cpu: 300m
+              memory: 1024Mi
+              ephemeral-storage: "2Gi"
+            requests:
+              cpu: 200m
+              memory: 512Mi
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: sec-pgadmin
+                  key: email
+            - name: PGADMIN_DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sec-pgadmin
+                  key: password
+            - name: PGADMIN_DISABLE_POSTFIX
+              value: "True"
+            - name: PGADMIN_CONFIG_PASSWORD_LENGTH_MIN
+              value: "12"
+            - name: PGADMIN_CONFIG_LOGIN_BANNER
+              value: "'Unauthorised use is strictly forbidden.'"
+            - name: PGADMIN_DISABLE_POSTFIX
+              value: "True"
+            - name: PGADMIN_CONFIG_MAX_SESSION_IDLE_TIME
+              value: "20"
+            - name: PGADMIN_CONFIG_ALLOW_SAVE_PASSWORD
+              value: "False"
+            - name: PGADMIN_CONFIG_MFA_ENABLED
+              value: "True"
+            - name: PGADMIN_CONFIG_MFA_FORCE_REGISTRATION
+              value: "True"
+            - name: PGADMIN_CONFIG_MFA_SUPPORTED_METHODS
+              value: '["authenticator"]'
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+
+          volumeMounts:
+            - name: pgadmin4-servers-volume
+              mountPath: /pgadmin4/servers.json
+              subPath: servers.json
+            - name: pgadmin-data
+              mountPath: /var/lib/pgadmin
+
+      volumes:
+        - name: pgadmin4-servers-volume
+          configMap:
+            name: cfm-pgadmin4-servers
+        - name: pgadmin-data
+          persistentVolumeClaim:
+            claimName: pvc-pgadmin
+
+      imagePullSecrets:
+        - name: minbzk-registry

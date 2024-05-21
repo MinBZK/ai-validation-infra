@@ -1,38 +1,84 @@
 {
-	"name": "Kubernetes - Local Configuration",
-	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"enableNonRootDocker": "true",
-			"moby": "true"
-		},
-		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-			"version": "latest",
-			"helm": "latest",
-			"minikube": "none"
-		},
-        "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
-            "plugins": "z"
+  "name": "Kubernetes - Local Configuration",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "containerEnv": {
+    "DEVCONTAINER": "1",
+    "PYTHONASYNCIODEBUG": "1",
+    "POETRY_VIRTUALENVS_CREATE": "false",
+    "PYTHONPATH": "/workspaces/ai-validation-infra/"
+  },
+  "remoteUser": "root",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "minikube": "none",
+      "helm": "none"
+    },
+    "./local-features/copy-kube-config": {}
+  },
+  "initializeCommand": "cd .devcontainer && bash ensure-mount-sources",
+  "postCreateCommand": ".devcontainer/postCreateCommand.sh",
+  "mounts": [
+    {
+      "source": "${env:HOME}${env:USERPROFILE}/.kube",
+      "target": "/usr/local/share/kube-localhost",
+      "type": "bind"
+    },
+    {
+      "source": "${env:HOME}${env:USERPROFILE}/.config/pinniped/",
+      "target": "/usr/local/share/pinniped-localhost/",
+      "type": "bind"
+    }
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "editorconfig.editorconfig",
+        "streetsidesoftware.code-spell-checker",
+        "redhat.vscode-yaml",
+        "charliermarsh.ruff",
+        "mhutchie.git-graph",
+        "ms-vsliveshare.vsliveshare",
+        "DavidAnson.vscode-markdownlint"
+      ],
+      "settings": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.renderWhitespace": "boundary",
+        "files.trimTrailingWhitespace": true,
+        "terminal.integrated.inheritEnv": true,
+        "debug.toolBarLocation": "commandCenter",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh"
+          }
         },
-		"./local-features/copy-kube-config": {}
-	},
-	"remoteEnv": {
-		"SYNC_LOCALHOST_KUBECONFIG": "true"
-	},
-	"initializeCommand": "cd .devcontainer && bash ensure-mount-sources",
-	"postCreateCommand": "gi",
-	"mounts": [
-		{
-			"source": "${env:HOME}${env:USERPROFILE}/.kube",
-			"target": "/usr/local/share/kube-localhost",
-			"type": "bind"
-		},
-		// Optional mount to also sync certs in your .minikube folder
-		{
-			"source": "${env:HOME}${env:USERPROFILE}/.minikube",
-			"target": "/usr/local/share/minikube-localhost",
-			"type": "bind"
-		}
-	],
-
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "[yaml]": {
+          "editor.defaultFormatter": "redhat.vscode-yaml"
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "[markdown]": {
+          "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "files.autoSave": "onFocusChange",
+        "python.testing.pytestArgs": [
+          "tests"
+        ],
+        "python.testing.unittestEnabled": false,
+        "python.testing.pytestEnabled": true
+      }
+    }
+  }
 }

@@ -1,0 +1,123 @@
+name: continuous-integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: "poetry"
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: run ruff
+        run: poetry run ruff check --output-format=github
+
+      - name: Run format
+        run: poetry run ruff format --check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: "poetry"
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run pytest
+        run: poetry run pytest
+
+  lint-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner (secrets)
+        uses: aquasecurity/trivy-action@master
+        with:
+          trivy-config: trivy.yaml
+          scan-type: fs
+          scan-ref: '.'
+
+      - name: SonarCloud Scan
+        if: always()
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  diff:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: generate PR branch manifest
+        run: script/generate-manifests.sh -d ./pr-manifests
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main-repo
+
+      - name: generate Main branch manifest
+        run: main-repo/script/generate-manifests.sh -d ./main-manifests
+
+      - name: diff manifests
+        run: diff -bur ./main-manifests ./pr-manifests | tee diff.txt >> $GITHUB_OUTPUT
+        id: diff
+
+      # comment on pr with diff
+      - name: Comment on PR with diff
+        if: ${{ steps.diff.outputs.stdout != '' }}
+        run: |
+          cat diff.txt | gh pr comment $PR --body-file -
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.number }}
+
+
+  notifyMattermost:
+    runs-on: ubuntu-latest
+    needs: [lint-config, lint-test, test]
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    steps:
+      - uses: mattermost/action-mattermost-notify@master
+        if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+        with:
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_WEBHOOK_URL }}
+          MATTERMOST_CHANNEL: dev
+          TEXT: |
+            ${{ github.repository }} failed build @here :unamused:
+            :rotating_light: [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed :fire:
+          MATTERMOST_USERNAME: ${{ github.triggering_actor }}

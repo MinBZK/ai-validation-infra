@@ -9,14 +9,14 @@ spec:
     - host: set-in-overlay
       http:
         paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
+          - backend:
               service:
                 name: svc
                 port:
-                  number: 80
+                  number: 8000
+            path: /
+            pathType: Prefix
   tls:
     - hosts:
         - set-in-overlay
-      secretName: llm-benchmarks-tls
+      secretName: tad-tls

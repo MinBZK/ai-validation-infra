@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tad
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - image: tad-image
+          name: tad
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          env:
+            - name: APP_DATABASE_SCHEME
+              value: postgresql
+            - name: APP_DATABASE_SERVER
+              value: tad-cluster-db-rw
+            - name: APP_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: sec-postgres
+                  key: username
+            - name: APP_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sec-postgres
+                  key: password
+            - name: APP_DATABASE_DB
+              value: tad
+            - name: LOGGING_LEVEL
+              value: INFO
+            - name: ENVIRONMENT
+              value: production
+          livenessProbe:
+            initialDelaySeconds: 20
+            httpGet:
+              path: /health/live
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8000
+      imagePullSecrets:
+        - name: minbzk-registry

@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Ruff lint",
+            "detail": "lint code.",
+            "type": "shell",
+            "command": "poetry run ruff check --fix",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Ruff format",
+            "detail": "format code.",
+            "type": "shell",
+            "command": "poetry run ruff format",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "PyTest",
+            "detail": "test all code",
+            "type": "shell",
+            "command": "poetry run pytest",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

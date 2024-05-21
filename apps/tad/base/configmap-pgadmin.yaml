@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cfm-pgadmin4-servers
+data:
+  servers.json: |
+    {
+      "Servers": {
+        "1": {
+          "Name": "Read-Write",
+          "Group": "Production Servers",
+          "Port": 5432,
+          "Username": "tad",
+          "Host": "tad-cluster-db-rw",
+          "SSLMode": "prefer",
+          "MaintenanceDB": "postgres"
+        },
+        "2": {
+          "Name": "Read-Only",
+          "Group": "Production Servers",
+          "Port": 5432,
+          "Username": "tad",
+          "Host": "tad-cluster-db-r",
+          "SSLMode": "prefer",
+          "MaintenanceDB": "postgres"
+        }
+      }
+    }

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-pgadmin
+spec:
+  ports:
+    - port: 5050
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: pgadmin
+  type: ClusterIP

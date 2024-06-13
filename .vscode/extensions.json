@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "editorconfig.editorconfig",
+        "streetsidesoftware.code-spell-checker",
+        "redhat.vscode-yaml",
+        "charliermarsh.ruff",
+        "github.vscode-github-actions",
+        "mhutchie.git-graph",
+        "ms-vsliveshare.vsliveshare",
+        "DavidAnson.vscode-markdownlint"
+    ]
+}

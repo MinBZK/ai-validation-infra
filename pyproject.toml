@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "ai-validation-infra"
+version = "0.1.0"
+description = ""
+authors = ["ai-validatie-team <ai-validatie@minbzk.nl>"]
+readme = "README.md"
+license = "EUPL-1.2"
+repository = "https://github.com/MinBZK/ai-validation-infra"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+checkov = "^3.2.100"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.3"
+pre-commit = "^3.7.0"
+
+[tool.poetry.urls]
+"Issue Tracker" = "https://github.com/MinBZK/ai-validation-infra/issues"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# Ruff settings: https://docs.astral.sh/ruff/configuration/
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["tests"]
+
+[tool.ruff.format]
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = ["I", "SIM", "B", "UP", "F", "E", "S", "C90", "DTZ", "LOG", "PIE", "PT", "ERA", "W", "C", "TRY", "RUF"]
+fixable = ["ALL"]
+task-tags = ["TODO"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**.py" = ["S101"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 8
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+addopts = "--strict-markers"
+
+[tool.coverage.run]
+branch = true
+command_line = "-m pytest"
+relative_files = true # needed for sonarcloud code coverage
+omit = [
+    "tests/*"
+]
+
+[tool.coverage.report]
+fail_under = 95
+
+[tool.coverage.html]
+directory = "htmlcov"
+title = "infra"

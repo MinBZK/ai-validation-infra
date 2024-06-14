@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - 'main'
+      - "main"
 
 jobs:
   lint-test:
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
           cache: "poetry"
 
       - name: Install dependencies
@@ -45,7 +45,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
           cache: "poetry"
 
       - name: Install dependencies
@@ -64,7 +64,7 @@ jobs:
         with:
           trivy-config: trivy.yaml
           scan-type: fs
-          scan-ref: '.'
+          scan-ref: "."
 
       - name: SonarCloud Scan
         if: always()
@@ -91,21 +91,50 @@ jobs:
           path: main-repo
 
       - name: generate Main branch manifest
-        run: main-repo/script/generate-manifests.sh -d ./main-manifests
+        run: |
+          cd main-repo
+          script/generate-manifests.sh -d ../main-manifests
+          cd ..
+
+      - name: list manifests
+        run: |
+          find ./pr-manifests -type f
+          find ./main-manifests -type f
 
       - name: diff manifests
-        run: diff -bur ./main-manifests ./pr-manifests | tee diff.txt >> $GITHUB_OUTPUT
+        run: diff -bur ./main-manifests ./pr-manifests > diff.txt || true
+
+      - name: get file size
+        run: |
+          file_size=$(stat -c%s diff.txt)
+          echo "file_size=$file_size" >> $GITHUB_OUTPUT
         id: diff
+
+      - name: format diff
+        if: ${{ steps.diff.outputs.file_size != '0' }}
+        run: |
+          echo -e 'MANIFESTDIFF\n```\n' > formatted_diff.txt
+          cat diff.txt >> formatted_diff.txt
+          echo -e '\n```' >> "formatted_diff.txt"
+
+      - name: Find Comment
+        if: ${{ steps.diff.outputs.file_size != '0' }}
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: MANIFESTDIFF
 
       # comment on pr with diff
       - name: Comment on PR with diff
-        if: ${{ steps.diff.outputs.stdout != '' }}
-        run: |
-          cat diff.txt | gh pr comment $PR --body-file -
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR: ${{ github.event.number }}
-
+        if: ${{ steps.diff.outputs.file_size != '0' }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: formatted_diff.txt
+          edit-mode: replace
+          comment-id: ${{ steps.fc.outputs.comment-id }}
 
   notifyMattermost:
     runs-on: ubuntu-latest

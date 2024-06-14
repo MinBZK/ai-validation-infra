@@ -44,8 +44,6 @@ spec:
               value: "12"
             - name: PGADMIN_CONFIG_LOGIN_BANNER
               value: "'Unauthorised use is strictly forbidden.'"
-            - name: PGADMIN_DISABLE_POSTFIX
-              value: "True"
             - name: PGADMIN_CONFIG_MAX_SESSION_IDLE_TIME
               value: "20"
             - name: PGADMIN_CONFIG_ALLOW_SAVE_PASSWORD

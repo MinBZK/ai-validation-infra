@@ -33,7 +33,7 @@ def test_namespace(manifest):
     assert len(statefull_sets) == 1
 
     statefull_set = statefull_sets[0]
-    assert statefull_set["metadata"]["namespace"] == "tn-ai-validation-infra"
+    assert statefull_set["metadata"]["namespace"] == "tn-ai-validation-vault"
 
 
 def test_port_mappings(manifest):

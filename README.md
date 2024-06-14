@@ -52,13 +52,17 @@ to install pinniped follow [pinniped install]( https://get.pinniped.dev) tutoria
 
 The AI Validation team has access to the following namespaces:
 
-* tn-ai-validation-infra. Purpose: general infra needed for ai validation team like secrets management and identity management.
-* tn-ai-validation-llm-benchmarks. Purpose:  Running LLM benchmark software
-* tn-ai-validation-playground. Purpose: random stuff for fun. can be removed at any moment
-* tn-ai-validation-tad. Purpose: running TAD main branch
-* tn-ai-validation-tad-staging. Purpose: Running tad PRs branches
+* tn-ai-validation-grafana: grafana dashboard for our team (managed by digilab)
+* tn-ai-validation-infra. general infra not managed by flux. currenlty runs [vault](https://vault.apps.digilab.network).
+* tn-ai-validation-keycloak. keycloak setup
+* tn-ai-validation-llm-benchmarks. Running LLM benchmark software
+* tn-ai-validation-playground. random stuff for fun. can be removed at any moment
+* tn-ai-validation-tad. running [tad](tad.prd.apps.digilab.network) releases with [pgadmin](pgadmin.prd.apps.digilab.network)
+* tn-ai-validation-tad-staging. Running [tad](tad.stag.apps.digilab.network) main branch with [pgadmin](pgadmin.stag.apps.digilab.network)
+* tn-ai-validation-vault: needs to have vault from tn-ai-validation-infra. migration needed
 
 ### storage classes
+
 The following storage classes are available for persistent storage
 
 ```bash

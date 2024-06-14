@@ -102,7 +102,7 @@ jobs:
           find ./main-manifests -type f
 
       - name: diff manifests
-        run: diff -bur ./main-manifests ./pr-manifests > diff.txt || true
+        run: diff -burN ./main-manifests ./pr-manifests > diff.txt || true
 
       - name: get file size
         run: |

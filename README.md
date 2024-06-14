@@ -1,5 +1,9 @@
 # AI Validation Infra
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/minbzk/ai-validation-infra/ci.yml?label=tests)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=MinBZK_ai-validation-infra&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=MinBZK_ai-validation-infra)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=MinBZK_ai-validation-infra&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=MinBZK_ai-validation-infra)
+
 This is the infra repository deploying to a kubernetes cluster.
 
 Note: Changes to this repo's MAIN branch are deployed to kubernetes.

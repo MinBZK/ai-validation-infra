@@ -6,7 +6,7 @@ import yaml
 
 @pytest.fixture()
 def manifest() -> list[dict]:
-    result = subprocess.run(["kubectl", "kustomize", "apps/tad/overlays/staging"], capture_output=True)  # noqa: S603, S607
+    result = subprocess.run(["kubectl", "kustomize", "apps/tad/overlays/sandbox"], capture_output=True)  # noqa: S603, S607
     manifest = result.stdout.decode("utf-8")
     yamls = yaml.safe_load_all(manifest)
     return list(yamls)

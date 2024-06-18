@@ -1,0 +1,13 @@
+{
+  "$schema": "https://flagd.dev/schema/v0/flags.json",
+  "flags": {
+    "myStringFlag": {
+      "state": "ENABLED",
+      "variants": {
+        "key1": "val1",
+        "key2": "val2"
+      },
+      "defaultVariant": "key1"
+    }
+  }
+}

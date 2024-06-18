@@ -10,13 +10,13 @@ resources:
   - secret-postgres-super.yaml
 
 commonAnnotations:
-  commithash: "replacehash"
-  minbzk.github.io/version: "0.1.0"
+  commithash: cf8d3d04d2783dd6b0e309ac24c67eb14fcb884d
+  minbzk.github.io/version: main
 
 images:
   - name: tad-image
     newName: ghcr.io/minbzk/tad
-    newTag: pr-33@sha256:cf4cbdb5a692a52ebf55b74f8fb821c25cc8b8f3a9768100c5099a8c92173f9d
+    newTag: main@sha256:0090e21ca0818e1f536322ebddfa04a42dbc75c9c84c1ebd2f83abce6785996e
 
 patches:
   - target:

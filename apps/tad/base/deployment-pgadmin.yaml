@@ -13,7 +13,7 @@ spec:
       securityContext:
         fsGroup: 5050
       containers:
-        - image: dpage/pgadmin4:8.7
+        - image: dpage/pgadmin4:8.8
           name: pgadmin
           imagePullPolicy: Always
           ports:
@@ -54,6 +54,11 @@ spec:
               value: "True"
             - name: PGADMIN_CONFIG_MFA_SUPPORTED_METHODS
               value: '["authenticator"]'
+            - name: PGADMIN_CONFIG_LOG_ROTATION_MAX_LOG_FILES
+              value: "10"
+            - name: PGADMIN_CONFIG_LOG_ROTATION_SIZE
+              value: "10"
+
           readinessProbe:
             httpGet:
               path: /

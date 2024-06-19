@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+namespace: fake-namespace
+
+namePrefix: flagd-
+
+configMapGenerator:
+  - name: open-feature-flags
+    files:
+      - open-feature-flags.json
+
+commonLabels:
+  minbzk.github.io/name: flagd
+
+buildMetadata: [originAnnotations]

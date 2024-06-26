@@ -12,6 +12,14 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         fsGroup: 5050
+      initContainers:
+        - name: init-clean-sessions
+          image: busybox
+          command: ['sh', '-c', 'rm -rf /var/lib/pgadmin/sessions/*']
+          volumeMounts:
+            - name: pgadmin-data
+              mountPath: /var/lib/pgadmin
+
       containers:
         - image: dpage/pgadmin4:8.8
           name: pgadmin

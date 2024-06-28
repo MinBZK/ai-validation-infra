@@ -37,6 +37,13 @@ def test_labeling(manifest):
     assert deployment["metadata"]["name"] == "tad-dpl"
 
 
+def test_environment(manifest):
+    deployments = [m for m in manifest if m["kind"] == "Deployment"]
+    deployment = deployments[0]
+    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][6]["name"] == "ENVIRONMENT"
+    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][6]["value"] == "demo"
+
+
 def test_namespace(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
 

@@ -43,7 +43,7 @@ spec:
             - name: LOGGING_LEVEL
               value: INFO
             - name: ENVIRONMENT
-              value: production
+              value: demo
           livenessProbe:
             initialDelaySeconds: 20
             httpGet:

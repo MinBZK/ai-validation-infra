@@ -15,7 +15,7 @@ spec:
       initContainers:
         - name: init-clean-sessions
           image: busybox
-          command: ['sh', '-c', 'rm -rf /var/lib/pgadmin/sessions/*']
+          command: ['sh', '-c', 'rm -rf /var/lib/pgadmin/sessions']
           volumeMounts:
             - name: pgadmin-data
               mountPath: /var/lib/pgadmin

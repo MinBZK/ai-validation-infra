@@ -13,7 +13,8 @@ data:
           "Username": "tad",
           "Host": "tad-cluster-db-rw",
           "SSLMode": "prefer",
-          "MaintenanceDB": "postgres"
+          "MaintenanceDB": "postgres",
+          "Shared": true
         },
         "2": {
           "Name": "Read-Only",
@@ -22,7 +23,8 @@ data:
           "Username": "tad",
           "Host": "tad-cluster-db-r",
           "SSLMode": "prefer",
-          "MaintenanceDB": "postgres"
+          "MaintenanceDB": "postgres",
+          "Shared": true
         }
       }
     }

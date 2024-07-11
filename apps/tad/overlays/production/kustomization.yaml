@@ -16,7 +16,7 @@ commonAnnotations:
 images:
   - name: tad-image
     newName: ghcr.io/minbzk/tad
-    newTag: main@sha256:f206be5c8f3c8297cb63bd95f79c240c29f6e39778c37f6045c22b8ce35fd8ec
+    newTag: main@sha256:12b2a9d02f377883536d5725cc8b3db53e7a572bc4a97ffd2c3d4c79412078b1
 
 patches:
   - target:

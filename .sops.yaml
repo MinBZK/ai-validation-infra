@@ -17,3 +17,7 @@ creation_rules:
   - path_regex: apps/tad/overlays/sandbox/secret.*
     encrypted_regex: ^(data|stringData)$
     age: "age1tzxxf0sp4hpyqygwzwnuj4lrhn33c2kq4yce9w8my84vpvx23duscc9qgc"
+
+  - path_regex: tools/wiki/overlays/production/secret.*
+    encrypted_regex: ^(data|stringData)$
+    age: "age1c3jzgmgndqjltttugk74dn4ym7hturvl7druzl5gpe50t5y57apqyah6k5"

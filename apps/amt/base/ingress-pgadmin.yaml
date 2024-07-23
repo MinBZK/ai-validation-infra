@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ing
+  name: ing-pgadmin
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
@@ -11,12 +11,12 @@ spec:
         paths:
           - backend:
               service:
-                name: svc
+                name: svc-pgadmin
                 port:
-                  number: 8000
+                  number: 5050
             path: /
             pathType: Prefix
   tls:
     - hosts:
         - set-in-overlay
-      secretName: tad-tls
+      secretName: amt-pgadmin-tls

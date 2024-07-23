@@ -8,5 +8,5 @@ spec:
       protocol: TCP
       targetPort: 8000
   selector:
-    app: tad
+    app: amt
   type: ClusterIP

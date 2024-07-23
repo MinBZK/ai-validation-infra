@@ -8,8 +8,8 @@ spec:
 
   bootstrap:
     initdb:
-      database: tad
-      owner: tad
+      database: amt
+      owner: amt
       secret:
         name: sec-postgres
 

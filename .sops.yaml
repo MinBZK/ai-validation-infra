@@ -1,8 +1,8 @@
 ###################################
 # SOPS public keys per namespace: #
 ###################################
-# tn-ai-validation-tad: age1y0deq3t66yld72t4p8eawngpreffrsvztaffhj7f3wccercdx4psy5mvl7
-# tn-ai-validation-tad-staging: age1tzxxf0sp4hpyqygwzwnuj4lrhn33c2kq4yce9w8my84vpvx23duscc9qgc
+# tn-ai-validation-amt: age1y0deq3t66yld72t4p8eawngpreffrsvztaffhj7f3wccercdx4psy5mvl7
+# tn-ai-validation-amt-staging: age1tzxxf0sp4hpyqygwzwnuj4lrhn33c2kq4yce9w8my84vpvx23duscc9qgc
 # tn-ai-validation-llm-benchmarks: age1m785p5l25zeseveunxkhhdwmfnu2jq02vq6ldrntcml72rmwm5dsak5dda
 # tn-ai-validation-infra: age10dzmr75f529jzj5j3srh2cqlsdd6pgdsu4tveydjlv8v8ec0ap0sacdknq
 # tn-ai-validation-playground: age1c3jzgmgndqjltttugk74dn4ym7hturvl7druzl5gpe50t5y57apqyah6k5
@@ -11,11 +11,11 @@
 # tn-ai-validation-ai-act-decisiontree: age1vr2kga3l0vcx0767yckwtluxxa22lf6syvjpwlft26yvxgj8peyqvw9dtc
 
 creation_rules:
-  - path_regex: apps/tad/overlays/production/secret.*
+  - path_regex: apps/amt/overlays/production/secret.*
     encrypted_regex: ^(data|stringData)$
     age: "age1y0deq3t66yld72t4p8eawngpreffrsvztaffhj7f3wccercdx4psy5mvl7"
 
-  - path_regex: apps/tad/overlays/sandbox/secret.*
+  - path_regex: apps/amt/overlays/sandbox/secret.*
     encrypted_regex: ^(data|stringData)$
     age: "age1tzxxf0sp4hpyqygwzwnuj4lrhn33c2kq4yce9w8my84vpvx23duscc9qgc"
 

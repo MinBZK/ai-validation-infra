@@ -6,7 +6,7 @@ import yaml
 
 @pytest.fixture()
 def manifest() -> list[dict]:
-    result = subprocess.run(["kubectl", "kustomize", "apps/tad/overlays/production"], capture_output=True)  # noqa: S603, S607
+    result = subprocess.run(["kubectl", "kustomize", "apps/amt/overlays/production"], capture_output=True)  # noqa: S603, S607
     manifest = result.stdout.decode("utf-8")
     yamls = yaml.safe_load_all(manifest)
     return list(yamls)
@@ -33,8 +33,8 @@ def test_labeling(manifest):
     assert len(deployments) == 2
 
     deployment = deployments[0]
-    assert deployment["metadata"]["labels"]["minbzk.github.io/name"] == "tad"
-    assert deployment["metadata"]["name"] == "tad-dpl"
+    assert deployment["metadata"]["labels"]["minbzk.github.io/name"] == "amt"
+    assert deployment["metadata"]["name"] == "amt-dpl"
 
 
 def test_environment(manifest):
@@ -50,7 +50,7 @@ def test_namespace(manifest):
     assert len(deployments) == 2
 
     deployment = deployments[0]
-    assert deployment["metadata"]["namespace"] == "tn-ai-validation-tad"
+    assert deployment["metadata"]["namespace"] == "tn-ai-validation-amt"
 
 
 def test_port_mappings(manifest):
@@ -93,7 +93,7 @@ def test_ingress(manifest):
     ingresses = [m for m in manifest if m["kind"] == "Ingress"]
 
     assert len(ingresses) == 2
-    assert ingresses[0]["spec"]["rules"][0]["host"] == "tad.prd.apps.digilab.network"
+    assert ingresses[0]["spec"]["rules"][0]["host"] == "amt.prd.apps.digilab.network"
     assert ingresses[0]["spec"]["rules"][0]["http"]["paths"][0]["pathType"] == "Prefix"
     assert ingresses[1]["spec"]["rules"][0]["host"] == "pgadmin.prd.apps.digilab.network"
     assert ingresses[1]["spec"]["rules"][0]["http"]["paths"][0]["pathType"] == "Prefix"

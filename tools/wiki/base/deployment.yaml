@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wiki
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - image: wiki-image
+          name: wiki
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: 700m
+              memory: 512Mi
+              ephemeral-storage: "2Gi"
+            requests:
+              cpu: 500m
+              memory: 512Mi
+          env:
+            - name: DB_TYPE
+              value: postgres
+            - name: DB_HOST
+              value: wiki-cluster-db-rw
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: wiki
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: sec-postgres-super
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: sec-postgres-super
+                  key: password
+            - name: SSL_ACTIVE
+              value: "false"
+            - name: LOG_LEVEL
+              value: debug
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+      imagePullSecrets:
+        - name: minbzk-registry

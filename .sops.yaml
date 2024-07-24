@@ -6,8 +6,9 @@
 # tn-ai-validation-llm-benchmarks: age1m785p5l25zeseveunxkhhdwmfnu2jq02vq6ldrntcml72rmwm5dsak5dda
 # tn-ai-validation-infra: age10dzmr75f529jzj5j3srh2cqlsdd6pgdsu4tveydjlv8v8ec0ap0sacdknq
 # tn-ai-validation-playground: age1c3jzgmgndqjltttugk74dn4ym7hturvl7druzl5gpe50t5y57apqyah6k5
-# tn-ai-validation-keycloak:
-# tn-ai-validation-vault
+# tn-ai-validation-keycloak: age1f7z0780s30xvm05c7h25l8lwmcxkw24rz0egc2g7vglncmft04esjd7uga
+# tn-ai-validation-vault: age132j0q8hy44arlu8avet6hltq404f47gfuh27748qclla73dmkf0se9hlz7
+# tn-ai-validation-ai-act-decisiontree: age1vr2kga3l0vcx0767yckwtluxxa22lf6syvjpwlft26yvxgj8peyqvw9dtc
 
 creation_rules:
   - path_regex: apps/tad/overlays/production/secret.*
@@ -21,3 +22,11 @@ creation_rules:
   - path_regex: tools/wiki/overlays/production/secret.*
     encrypted_regex: ^(data|stringData)$
     age: "age1c3jzgmgndqjltttugk74dn4ym7hturvl7druzl5gpe50t5y57apqyah6k5"
+
+  - path_regex: tools/keycloak/overlays/production/secret.*
+    encrypted_regex: ^(data|stringData)$
+    age: age1f7z0780s30xvm05c7h25l8lwmcxkw24rz0egc2g7vglncmft04esjd7uga
+
+  - path_regex: apps/keycloak/overlays/sandbox/secret.*
+    encrypted_regex: ^(data|stringData)$
+    age: age1f7z0780s30xvm05c7h25l8lwmcxkw24rz0egc2g7vglncmft04esjd7uga

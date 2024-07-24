@@ -11,12 +11,12 @@ resources:
 
 commonAnnotations:
   commithash: 1094faa50c7faad46dc932ff3b86aeb961c9fe6f
-  minbzk.github.io/version: pr-72
+  minbzk.github.io/version: main
 
 images:
   - name: tad-image
     newName: ghcr.io/minbzk/tad
-    newTag: pr-72@sha256:6880e9fb41cfb641f88a5e3184fcf4c04c243433ab6c3b34b9900a2f7058c7fe
+    newTag: main@sha256:e610d235b72661f8cf8f589fc6f1b83437e68afd7335e92bd9a7bb9efb2a640d
 
 patches:
   - target:

@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: tn-ai-validation-tad
+namespace: tn-ai-validation-amt-staging
 
 resources:
   - ../../base
@@ -14,9 +14,9 @@ commonAnnotations:
   minbzk.github.io/version: main
 
 images:
-  - name: tad-image
-    newName: ghcr.io/minbzk/tad
-    newTag: main@sha256:e610d235b72661f8cf8f589fc6f1b83437e68afd7335e92bd9a7bb9efb2a640d
+  - name: amt-image
+    newName: ghcr.io/minbzk/amt
+    newTag: main@sha256:218ec3d8dc6c278ef8a1ba53f1f1532f582f8334a76d73352a5f43ef928d333f
 
 patches:
   - target:
@@ -25,17 +25,17 @@ patches:
     patch: |
       - op: replace
         path: /spec/rules/0/host
-        value: tad.prd.apps.digilab.network
+        value: amt.stag.apps.digilab.network
       - op: replace
         path: /spec/tls/0/hosts/0
-        value: tad.prd.apps.digilab.network
+        value: amt.stag.apps.digilab.network
   - target:
       kind: Ingress
       name: ing-pgadmin
     patch: |
       - op: replace
         path: /spec/rules/0/host
-        value: pgadmin.prd.apps.digilab.network
+        value: pgadmin.stag.apps.digilab.network
       - op: replace
         path: /spec/tls/0/hosts/0
-        value: pgadmin.prd.apps.digilab.network
+        value: pgadmin.stag.apps.digilab.network

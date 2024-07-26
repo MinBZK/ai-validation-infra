@@ -10,3 +10,9 @@ __pycache__/
 coverage.lcov
 htmlcov/
 .coverage
+
+# MacOS
+*.DS_Store
+
+# Intellij IDE
+.idea/

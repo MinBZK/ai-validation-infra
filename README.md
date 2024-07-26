@@ -18,8 +18,8 @@ Secrets are managed with [SOPS](https://www.cncf.io/projects/sops/). Sops allows
 A private key that is set in the CI/CD can decrypt the secrets.
 
 ```shell
-sops --encrypt -i apps/tad/overlays/production/secret-postgres.yaml
-sops --decrypt -i apps/tad/overlays/production/secret-postgres.yaml
+sops --encrypt -i apps/amt/overlays/production/secret-postgres.yaml
+sops --decrypt -i apps/amt/overlays/production/secret-postgres.yaml
 ```
 
 By default sops looks in the .sops.yaml to get the public key to encrypt the files.
@@ -57,12 +57,12 @@ to install pinniped follow [pinniped install]( https://get.pinniped.dev) tutoria
 The AI Validation team has access to the following namespaces:
 
 * tn-ai-validation-grafana: grafana dashboard for our team (managed by digilab)
-* tn-ai-validation-infra. general infra not managed by flux. currenlty runs [vault](https://vault.apps.digilab.network).
+* tn-ai-validation-infra. general infra not managed by flux. currently runs [vault](https://vault.apps.digilab.network).
 * tn-ai-validation-keycloak. keycloak setup
 * tn-ai-validation-llm-benchmarks. Running LLM benchmark software
 * tn-ai-validation-playground. random stuff for fun. can be removed at any moment
-* tn-ai-validation-tad. running [tad](tad.prd.apps.digilab.network) releases with [pgadmin](pgadmin.prd.apps.digilab.network)
-* tn-ai-validation-tad-staging. Running [tad](tad.stag.apps.digilab.network) main branch with [pgadmin](pgadmin.stag.apps.digilab.network)
+* tn-ai-validation-amt. running [amt](amt.prd.apps.digilab.network) releases with [pgadmin](pgadmin.prd.apps.digilab.network)
+* tn-ai-validation-amt-staging. Running [amt](amt.stag.apps.digilab.network) main branch with [pgadmin](pgadmin.stag.apps.digilab.network)
 * tn-ai-validation-vault: needs to have vault from tn-ai-validation-infra. migration needed
 
 ### storage classes

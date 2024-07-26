@@ -10,8 +10,8 @@ data:
           "Name": "Read-Write",
           "Group": "Production Servers",
           "Port": 5432,
-          "Username": "tad",
-          "Host": "tad-cluster-db-rw",
+          "Username": "amt",
+          "Host": "amt-cluster-db-rw",
           "SSLMode": "prefer",
           "MaintenanceDB": "postgres",
           "Shared": true
@@ -20,8 +20,8 @@ data:
           "Name": "Read-Only",
           "Group": "Production Servers",
           "Port": 5432,
-          "Username": "tad",
-          "Host": "tad-cluster-db-r",
+          "Username": "amt",
+          "Host": "amt-cluster-db-r",
           "SSLMode": "prefer",
           "MaintenanceDB": "postgres",
           "Shared": true

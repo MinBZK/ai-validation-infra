@@ -7,12 +7,12 @@ spec:
   template:
     metadata:
       labels:
-        app: tad
+        app: amt
     spec:
       automountServiceAccountToken: false
       containers:
-        - image: tad-image
-          name: tad
+        - image: amt-image
+          name: amt
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -20,14 +20,16 @@ spec:
             limits:
               cpu: 700m
               memory: 128Mi
+              ephemeral-storage: "2Gi"
             requests:
               cpu: 500m
               memory: 64Mi
+              ephemeral-storage: "2Gi"
           env:
             - name: APP_DATABASE_SCHEME
               value: postgresql
             - name: APP_DATABASE_SERVER
-              value: tad-cluster-db-rw
+              value: amt-cluster-db-rw
             - name: APP_DATABASE_USER
               valueFrom:
                 secretKeyRef:
@@ -39,7 +41,7 @@ spec:
                   name: sec-postgres
                   key: password
             - name: APP_DATABASE_DB
-              value: tad
+              value: amt
             - name: LOGGING_LEVEL
               value: INFO
             - name: ENVIRONMENT

@@ -16,9 +16,9 @@ resources:
 
 namespace: fake-namespace
 
-namePrefix: tad-
+namePrefix: amt-
 
 commonLabels:
-  minbzk.github.io/name: tad
+  minbzk.github.io/name: amt
 
 buildMetadata: [originAnnotations]

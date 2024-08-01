@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+namespace: tn-ai-validation-ai-act-decisiontree
+
+namePrefix: ai-act-decisiontree-
+
+commonLabels:
+  minbzk.github.io/name: ai-act-decisiontree
+
+buildMetadata: [originAnnotations]
+
+commonAnnotations:
+  commithash: b5967d17d0433266a40a3f391d34b09b386e9ee8
+  minbzk.github.io/version: main
+
+images:
+  - name: ai-act-beslisboom-image
+    newName: ghcr.io/minbzk/ai-act-beslisboom
+    newTag: main@ sha256:8f4e5e7e2d7ab7d2e0fe1e377ba965664610ebcd3c8ba240cdc1c748f371adc8

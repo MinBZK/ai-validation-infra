@@ -41,7 +41,7 @@ def test_environment(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
     deployment = deployments[0]
     assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][6]["name"] == "ENVIRONMENT"
-    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][6]["value"] == "demo"
+    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][6]["value"] == "production"
 
 
 def test_namespace(manifest):

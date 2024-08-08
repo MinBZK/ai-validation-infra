@@ -28,7 +28,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: sec-keycloak
-                  key: username
+                  key: password
             - name: KC_PROXY
               value: "edge"
             - name: KC_HEALTH_ENABLED

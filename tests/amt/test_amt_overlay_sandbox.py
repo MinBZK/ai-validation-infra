@@ -4,7 +4,7 @@ import pytest
 import yaml
 
 
-@pytest.fixture()
+@pytest.fixture
 def manifest() -> list[dict]:
     result = subprocess.run(["kubectl", "kustomize", "apps/amt/overlays/sandbox"], capture_output=True)  # noqa: S603, S607
     manifest = result.stdout.decode("utf-8")

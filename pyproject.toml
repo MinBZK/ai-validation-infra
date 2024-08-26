@@ -16,7 +16,7 @@ checkov = "^3.2.100"
 pytest = "^8.1.1"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.4.3"
+ruff = "^0.6.2"
 pre-commit = "^3.7.0"
 
 [tool.poetry.urls]

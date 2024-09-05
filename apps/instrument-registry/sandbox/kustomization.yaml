@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+namespace: tn-ai-validation-instrument-registry
+
+namePrefix: instrument-registry-
+
+commonLabels:
+  minbzk.github.io/name: instrument-registry
+
+buildMetadata: [originAnnotations]
+
+commonAnnotations:
+  commithash: xx
+  minbzk.github.io/version: main
+
+images:
+  - name: instrument-registry-image
+    newName: ghcr.io/minbzk/instrument-registry
+    newTag: main@sha256:xx

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: instrument-registry
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - image: instrument-registry-image
+          name: instrument-registry
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 800m
+              memory: 256Mi
+              ephemeral-storage: "256Mi"
+            requests:
+              cpu: 500m
+              memory: 128Mi
+      imagePullSecrets:
+        - name: minbzk-registry

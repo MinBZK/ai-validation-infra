@@ -141,15 +141,28 @@ jobs:
     needs: [lint-config, lint-test, test]
     if: ${{ always() }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      # store variable for later use
+
+      - name: Get changed files
+        run: |
+          PRODUCT=$(git diff --name-only HEAD^ HEAD | grep -E '^(apps|tools)/' | head -1 | cut -d'/' -f2)
+          echo "PRODUCT: $PRODUCT"
+          echo "product=$PRODUCT" >> $GITHUB_OUTPUT
+        id: changed_files
+
       - uses: mattermost/action-mattermost-notify@master
         if: github.event_name != 'pull_request' && contains(needs.*.result, 'failure')
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_WEBHOOK_URL }}
           MATTERMOST_CHANNEL: deployment
           TEXT: |
-            ${{ github.repository }} failed deployment by ${{ github.actor }} :unamused:
-            :rotating_light: [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed for ${{ github.ref_name }} :fire:
+            :fire: ${{ github.repository }} failed deployment for ${{ steps.changed_files.outputs.product }} [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
           MATTERMOST_USERNAME: ${{ github.triggering_actor }}
+
 
       - uses: mattermost/action-mattermost-notify@master
         if: github.event_name != 'pull_request' && ! contains(needs.*.result, 'failure')
@@ -157,6 +170,5 @@ jobs:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_WEBHOOK_URL }}
           MATTERMOST_CHANNEL: deployment
           TEXT: |
-            ${{ github.repository }} sucessfull deployment by ${{ github.actor }} :satisfied:
-            [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) deployed for ${{ github.ref_name }} :sparkles:
+            :sparkles: ${{ github.repository }} sucessfull deployment for ${{ steps.changed_files.outputs.product }}. [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
           MATTERMOST_USERNAME: ${{ github.triggering_actor }}

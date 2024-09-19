@@ -22,4 +22,4 @@ commonAnnotations:
 images:
   - name: instrument-registry-image
     newName: ghcr.io/minbzk/instrument-registry
-    newTag: main@sha256:13f7952db800aa458d63e53680a6b2a9aa57c16a9f5a2b5184b090b95eaf3b0c
+    newTag: main@sha256:fdc8b610163b7fd85db47b42b42d690e19208e879f72dc6ed79630487f33a9ca

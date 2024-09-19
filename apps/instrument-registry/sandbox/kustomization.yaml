@@ -16,7 +16,7 @@ commonLabels:
 buildMetadata: [originAnnotations]
 
 commonAnnotations:
-  commithash: xx
+  commithash: 8bf500d2b543a7e62fcb6ed731aa75812f4aa009
   minbzk.github.io/version: main
 
 images:

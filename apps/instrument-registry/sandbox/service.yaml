@@ -6,7 +6,7 @@ spec:
   ports:
     - port: 8070
       protocol: TCP
-      targetPort: http
+      targetPort: 8070
   selector:
     app: instrument-registry
   type: ClusterIP

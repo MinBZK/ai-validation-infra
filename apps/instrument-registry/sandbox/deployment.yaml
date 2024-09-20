@@ -15,7 +15,7 @@ spec:
           name: instrument-registry
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8070
           resources:
             limits:
               cpu: 800m

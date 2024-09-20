@@ -4,9 +4,9 @@ metadata:
   name: svc
 spec:
   ports:
-    - port: 8070
+    - port: 8000
       protocol: TCP
-      targetPort: 8070
+      targetPort: 8000
   selector:
     app: instrument-registry
   type: ClusterIP

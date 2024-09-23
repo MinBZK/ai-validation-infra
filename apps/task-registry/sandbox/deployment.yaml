@@ -7,12 +7,12 @@ spec:
   template:
     metadata:
       labels:
-        app: instrument-registry
+        app: task-registry
     spec:
       automountServiceAccountToken: false
       containers:
-        - image: instrument-registry-image
-          name: instrument-registry
+        - image: task-registry-image
+          name: task-registry
           imagePullPolicy: Always
           ports:
             - containerPort: 8000

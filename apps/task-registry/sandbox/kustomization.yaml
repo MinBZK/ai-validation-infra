@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+namespace: tn-ai-validation-task-registry
+
+namePrefix: task-registry-
+
+commonLabels:
+  minbzk.github.io/name: task-registry
+
+buildMetadata: [originAnnotations]
+
+commonAnnotations:
+  commithash: 8bf500d2b543a7e62fcb6ed731aa75812f4aa009
+  minbzk.github.io/version: main
+
+images:
+  - name: task-registry-image
+    newName: ghcr.io/minbzk/task-registry
+    newTag: main@sha256:eb51ce367f88fcec8ad7aa00f4fd1303f0f29a4f723fb46d993897179d31c2e8

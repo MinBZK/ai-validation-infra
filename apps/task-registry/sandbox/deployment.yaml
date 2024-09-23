@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: task-registry
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - image: task-registry-image
+          name: task-registry
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 800m
+              memory: 256Mi
+              ephemeral-storage: "256Mi"
+            requests:
+              cpu: 500m
+              memory: 128Mi
+          livenessProbe:
+            initialDelaySeconds: 20
+            httpGet:
+              path: /health/live
+              port: 8000
+      imagePullSecrets:
+        - name: minbzk-registry

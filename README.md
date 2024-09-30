@@ -59,11 +59,12 @@ The AI Validation team has access to the following namespaces:
 * tn-ai-validation-grafana: grafana dashboard for our team (managed by digilab)
 * tn-ai-validation-infra. general infra not managed by flux. currently runs [vault](https://vault.apps.digilab.network).
 * tn-ai-validation-keycloak. keycloak setup
-* tn-ai-validation-llm-benchmarks. Running LLM benchmark software
 * tn-ai-validation-playground. random stuff for fun. can be removed at any moment
 * tn-ai-validation-amt. running [amt](amt.prd.apps.digilab.network) releases with [pgadmin](pgadmin.prd.apps.digilab.network)
 * tn-ai-validation-amt-staging. Running [amt](amt.stag.apps.digilab.network) main branch with [pgadmin](pgadmin.stag.apps.digilab.network)
 * tn-ai-validation-vault: needs to have vault from tn-ai-validation-infra. migration needed
+* tn-ai-validation-task-registry. Running the [Task Registry API](task-registry.apps.digilab.network)
+* tn-ai-validation-ai-act-decisiontree. Running the [AI Act Decisiontree frontend](ai-act-decisiontree.apps.digilab.network)
 
 ### storage classes
 

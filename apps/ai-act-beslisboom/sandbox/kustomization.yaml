@@ -22,4 +22,4 @@ commonAnnotations:
 images:
   - name: ai-act-beslisboom-image
     newName: ghcr.io/minbzk/ai-act-beslisboom
-    newTag: main@sha256:aff47676775342a5c03c3aef38083806e2d5f682a95b5961fdbe4b03654daf9b
+    newTag: main@sha256:7145caf61c63d78537055a1c7348ade6f494b872da8e2a7781c6c6a56ce7d771

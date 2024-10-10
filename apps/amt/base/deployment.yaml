@@ -30,6 +30,16 @@ spec:
               value: postgresql
             - name: APP_DATABASE_SERVER
               value: amt-cluster-db-rw
+            - name: OIDC_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: sec-oidc
+                  key: client_id
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sec-oidc
+                  key: client_secret
             - name: APP_DATABASE_USER
               valueFrom:
                 secretKeyRef:

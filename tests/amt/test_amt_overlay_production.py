@@ -40,8 +40,8 @@ def test_labeling(manifest):
 def test_environment(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
     deployment = deployments[0]
-    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][8]["name"] == "ENVIRONMENT"
-    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][8]["value"] == "production"
+    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][9]["name"] == "ENVIRONMENT"
+    assert deployment["spec"]["template"]["spec"]["containers"][0]["env"][9]["value"] == "production"
 
 
 def test_namespace(manifest):

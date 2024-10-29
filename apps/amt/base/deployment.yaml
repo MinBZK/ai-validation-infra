@@ -30,6 +30,8 @@ spec:
               value: postgresql
             - name: APP_DATABASE_SERVER
               value: amt-cluster-db-rw
+            - name: APP_DATABASE_DRIVER
+              value: "asyncpg"
             - name: OIDC_CLIENT_ID
               valueFrom:
                 secretKeyRef:

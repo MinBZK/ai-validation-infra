@@ -17,7 +17,7 @@ commonAnnotations:
 images:
   - name: amt-image
     newName: ghcr.io/minbzk/amt
-    newTag: main@sha256:46bb799315825621d59dc2da6748a31f026ad542f357758ed581df24e0cc4d39
+    newTag: main@sha256:b4cead73b36f8db9ab2915713be8453557af28e464f2af806afa4a5059798a5e
 
 patches:
   - target:

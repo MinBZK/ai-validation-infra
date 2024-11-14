@@ -170,5 +170,5 @@ jobs:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_WEBHOOK_URL }}
           MATTERMOST_CHANNEL: deployment
           TEXT: |
-            :sparkles: ${{ github.repository }} sucessfull deployment for ${{ steps.changed_files.outputs.product }}. [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            :sparkles: ${{ github.repository }} successfull deployment for ${{ steps.changed_files.outputs.product }}. [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
           MATTERMOST_USERNAME: ${{ github.triggering_actor }}

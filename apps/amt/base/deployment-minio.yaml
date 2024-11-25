@@ -13,12 +13,23 @@ spec:
         app: minio
 
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: minio
-        image: minio/minio:latest
+        image: minio/minio:RELEASE.2024-11-07T00-52-20Z
         command: ["minio", "server", "/data", "--console-address", ":9001"]
         ports:
         - containerPort: 9000
+        - containerPort: 9001
+        resources:
+          limits:
+            cpu: 700m
+            memory: 128Mi
+            ephemeral-storage: "2Gi"
+          requests:
+            cpu: 500m
+            memory: 64Mi
+            ephemeral-storage: "2Gi"
         env:
         - name: MINIO_ACCESS_KEY
           valueFrom:

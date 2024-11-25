@@ -64,7 +64,7 @@ The AI Validation team has access to the following namespaces:
 * tn-ai-validation-amt-staging. Running [amt](amt.stag.apps.digilab.network) main branch with [pgadmin](pgadmin.stag.apps.digilab.network)
 * tn-ai-validation-vault: needs to have vault from tn-ai-validation-infra. migration needed
 * tn-ai-validation-task-registry. Running the [Task Registry API](task-registry.apps.digilab.network)
-* tn-ai-validation-ai-act-decisiontree. Running the [AI Act Decisiontree frontend](ai-act-decisiontree.apps.digilab.network)
+* tn-ai-validation-ai-act-beslishulp. Running the [AI Act Beslishulp frontend](ai-act-beslishulp.apps.digilab.network)
 
 ### storage classes
 

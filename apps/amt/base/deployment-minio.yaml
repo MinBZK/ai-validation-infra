@@ -31,16 +31,16 @@ spec:
             memory: 64Mi
             ephemeral-storage: "2Gi"
         env:
-        - name: MINIO_ACCESS_KEY
+        - name: MINIO_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: sec-minio
-              key: access_key
-        - name: MINIO_SECRET_KEY
+              key: minio_root_password
+        - name: MINIO_ROOT_USER
           valueFrom:
             secretKeyRef:
               name: sec-minio
-              key: secret_key
+              key: minio_root_user
         volumeMounts:
         - name: minio-pv-storage
           mountPath: /data

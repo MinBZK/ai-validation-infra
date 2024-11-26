@@ -11,6 +11,7 @@ resources:
   - service-pgadmin.yaml
   - ingress-pgadmin.yaml
   - pvc-pgadmin.yaml
+  - pvc-minio.yaml
   - postgresql-cluster.yaml
   - postgresql-backup.yaml
   - configmap-pgadmin.yaml

@@ -7,6 +7,7 @@ resources:
   - ingress.yaml
   - horizontalpodautoscaler.yaml
   - deployment-pgadmin.yaml
+  - deployment-minio.yaml
   - service-pgadmin.yaml
   - ingress-pgadmin.yaml
   - pvc-pgadmin.yaml

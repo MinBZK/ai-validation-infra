@@ -41,6 +41,8 @@ spec:
             secretKeyRef:
               name: sec-minio
               key: minio_root_user
+        - name: MINIO_BROWSER_LOGIN_ANIMATION
+          value: "off"
         volumeMounts:
         - name: minio-pv-storage
           mountPath: /data

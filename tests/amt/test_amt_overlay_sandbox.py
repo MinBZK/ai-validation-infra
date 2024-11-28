@@ -30,7 +30,7 @@ def test_kinds(manifest):
 def test_labeling(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
 
-    assert len(deployments) == 2
+    assert len(deployments) == 3
 
     deployment = deployments[0]
     assert deployment["metadata"]["labels"]["minbzk.github.io/name"] == "amt"
@@ -47,7 +47,7 @@ def test_environment(manifest):
 def test_namespace(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
 
-    assert len(deployments) == 2
+    assert len(deployments) == 3
 
     deployment = deployments[0]
     assert deployment["metadata"]["namespace"] == "tn-ai-validation-amt-staging"
@@ -72,7 +72,7 @@ def test_port_mappings(manifest):
 def test_deployment(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
 
-    assert len(deployments) == 2
+    assert len(deployments) == 3
 
 
 def test_horizontal_pod_autoscaler(manifest):
@@ -81,10 +81,10 @@ def test_horizontal_pod_autoscaler(manifest):
     assert len(hpas) == 1
 
 
-def test_persistant_volume_clain(manifest):
+def test_persistant_volume_claim(manifest):
     pvcs = [m for m in manifest if m["kind"] == "PersistentVolumeClaim"]
 
-    assert len(pvcs) == 1
+    assert len(pvcs) == 2
 
     assert pvcs[0]["spec"]["accessModes"] == ["ReadWriteOnce"]
 

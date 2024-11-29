@@ -6,12 +6,12 @@ resources:
   - service.yaml
   - ingress.yaml
 
-namespace: tn-ai-validation-ai-act-beslishulp
+namespace: tn-ai-validation-ai-verordening-beslishulp
 
-namePrefix: ai-act-beslishulp-
+namePrefix: ai-verordening-beslishulp-
 
 commonLabels:
-  minbzk.github.io/name: ai-act-beslishulp
+  minbzk.github.io/name: ai-verordening-beslishulp
 
 buildMetadata: [originAnnotations]
 
@@ -20,6 +20,6 @@ commonAnnotations:
   minbzk.github.io/version: main
 
 images:
-  - name: ai-act-beslishulp-image
-    newName: ghcr.io/minbzk/ai-act-beslishulp
+  - name: ai-verordening-beslishulp-image
+    newName: ghcr.io/minbzk/ai-verordening-beslishulp
     newTag: main@sha256:310dff2f3d9c9e26d709f61cd8aec16ab75f8e99b17cd72136b128110d6b6097

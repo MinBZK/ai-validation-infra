@@ -8,5 +8,5 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: ai-act-decisiontree
+    app: ai-verordening-beslishulp
   type: ClusterIP

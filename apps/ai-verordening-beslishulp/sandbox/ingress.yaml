@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: ai-act-decisiontree.apps.digilab.network
+    - host: ai-verordening-beslishulp.apps.digilab.network
       http:
         paths:
           - backend:
@@ -20,5 +20,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - ai-act-decisiontree.apps.digilab.network
-      secretName: ai-act-decisiontree-tls
+        - ai-verordening-beslishulp.apps.digilab.network
+      secretName: ai-verordening-beslishulp-tls

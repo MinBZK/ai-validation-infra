@@ -7,12 +7,12 @@ spec:
   template:
     metadata:
       labels:
-        app: ai-act-decisiontree
+        app: ai-verordening-beslishulp
     spec:
       automountServiceAccountToken: false
       containers:
-        - image: ai-act-beslisboom-image
-          name: ai-act-decisiontree
+        - image: ai-verordening-beslishulp-image
+          name: ai-verordening-beslishulp
           imagePullPolicy: Always
           ports:
             - containerPort: 80

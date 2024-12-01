@@ -5,6 +5,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - ingress-old.yaml
 
 namespace: tn-ai-validation-ai-verordening-beslishulp
 
@@ -21,5 +22,5 @@ commonAnnotations:
 
 images:
   - name: ai-verordening-beslishulp-image
-    newName: ghcr.io/minbzk/ai-verordening-beslishulp
-    newTag: main@sha256:310dff2f3d9c9e26d709f61cd8aec16ab75f8e99b17cd72136b128110d6b6097
+    newName: ghcr.io/minbzk/ai-act-beslisboom
+    newTag: main@sha256:d4c454ddbc07057aa98cf9d0c9d8af6601a8d24bf3b671b135353be77cd78557

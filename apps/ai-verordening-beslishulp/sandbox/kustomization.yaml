@@ -22,5 +22,5 @@ commonAnnotations:
 
 images:
   - name: ai-verordening-beslishulp-image
-    newName: ghcr.io/minbzk/ai-act-beslisboom
+    newName: ghcr.io/minbzk/ai-verordening-beslishulp
     newTag: main@sha256:9d662ae45a6ebac1fb79a07efa0ad03d92b8c21ab28da6f11d16a11e3c3494f6

@@ -15,6 +15,7 @@ resources:
   - postgresql-cluster.yaml
   - postgresql-backup.yaml
   - configmap-pgadmin.yaml
+  - service-minio.yaml
 
 namespace: fake-namespace
 

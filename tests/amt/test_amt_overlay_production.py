@@ -102,5 +102,5 @@ def test_ingress(manifest):
 def test_service(manifest):
     services = [m for m in manifest if m["kind"] == "Service"]
 
-    assert len(services) == 2
+    assert len(services) == 3
     assert services[0]["spec"]["ports"][0]["port"] == 8000

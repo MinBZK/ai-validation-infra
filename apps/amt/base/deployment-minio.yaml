@@ -31,12 +31,16 @@ spec:
             memory: 512Mi
             ephemeral-storage: "2Gi"
         env:
-        - name: MINIO_ROOT_PASSWORD
+        - name: OBJECT_STORE_URL
+          value: amt-svc-minio:9000
+        - name: OBJECT_STORE_BUCKET_NAME
+          value: amt
+        - name: OBJECT_STORE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: sec-minio
               key: minio_root_password
-        - name: MINIO_ROOT_USER
+        - name: OBJECT_STORE_USER
           valueFrom:
             secretKeyRef:
               name: sec-minio

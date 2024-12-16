@@ -59,7 +59,7 @@ spec:
             - name: ENVIRONMENT
               value: production
             - name: OBJECT_STORE_URL
-              value: amt-svc-minio
+              value: svc-minio
             - name: OBJECT_STORE_BUCKET_NAME
               value: amt
             - name: OBJECT_STORE_PASSWORD

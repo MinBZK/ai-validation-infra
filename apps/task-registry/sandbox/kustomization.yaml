@@ -22,4 +22,4 @@ commonAnnotations:
 images:
   - name: task-registry-image
     newName: ghcr.io/minbzk/task-registry
-    newTag: main@sha256:e78cd58ef6d8bfbd44f42445e72f44c520fd44f26fb633c50165b29d528d777f
+    newTag: main@sha256:a65f8894f3c9f0c1cd999733375ea15f86af0b932eb21ab397049770d92fe251

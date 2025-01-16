@@ -17,7 +17,7 @@ spec:
         - name: keycloak-theme-puller
           command:
             - wget
-            - https://github.com/MinBZK/keycloak-theme/releases/download/v1.0.1/keycloak-nl-design-system.jar
+            - https://github.com/MinBZK/keycloak-theme/releases/download/v1.2.1/keycloak-nl-design-system.jar
             - -O
             - /opt/keycloak/providers/keycloak-nl-design-system.jar
           image: busybox:1.37.0

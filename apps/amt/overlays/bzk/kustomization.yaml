@@ -1,0 +1,43 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: tn-ai-validation-amt-bzk
+
+resources:
+  - ../../base
+  - secret-pgadmin.yaml
+  - secret-postgres.yaml
+  - secret-postgres-super.yaml
+  - secret-oidc.yaml
+  - secret-minio.yaml
+
+commonAnnotations:
+  commithash: 1094faa50c7faad46dc932ff3b86aeb961c9fe6f
+  minbzk.github.io/version: main
+
+images:
+  - name: amt-image
+    newName: ghcr.io/minbzk/amt
+    newTag: main@sha256:f2b301826364c4acae85b6c27896bb725554e0818aaace4bcbd203ef81d755ce
+
+patches:
+  - target:
+      kind: Ingress
+      name: ing
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: amt.bzk.apps.digilab.network
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: amt.bzk.apps.digilab.network
+  - target:
+      kind: Ingress
+      name: ing-pgadmin
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: pgadmin.bzk.apps.digilab.network
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: pgadmin.bzk.apps.digilab.network

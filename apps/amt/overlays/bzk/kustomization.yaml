@@ -41,3 +41,12 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: pgadmin.bzk.apps.digilab.network
+  - target:
+      kind: Deployment
+      name: dpl
+    patch: |-
+      - op: add
+        path: "/spec/template/spec/containers/0/env/-"
+        value:
+          name: OIDC_DISCOVERY_URL
+          value: "https://keycloak.apps.digilab.network/realms/Algoritmes-BZK/.well-known/openid-configuration"

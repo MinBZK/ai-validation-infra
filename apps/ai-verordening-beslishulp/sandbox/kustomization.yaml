@@ -23,4 +23,4 @@ commonAnnotations:
 images:
   - name: ai-verordening-beslishulp-image
     newName: ghcr.io/minbzk/ai-verordening-beslishulp
-    newTag: main@sha256:b8bd6890792a8d64c8d6484d5ee598c3b7bec609e1d530a4d0c298bcd2214f85
+    newTag: main@sha256:0c8cdb46718ea556e7851a32949e70dee06a59448c2418f1273ae5ffea8713f9

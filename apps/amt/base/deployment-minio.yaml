@@ -7,11 +7,12 @@ spec:
   selector:
     matchLabels:
       app: minio
+  strategy:
+    type: Recreate # Minio uses a singe-use PVC and thus can not do a RollingUpgrade
   template:
     metadata:
       labels:
         app: minio
-
     spec:
       automountServiceAccountToken: false
       containers:

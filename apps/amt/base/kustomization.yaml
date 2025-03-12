@@ -1,6 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+configurations:
+  - cnpg-transformer.yaml
+
 resources:
   - deployment.yaml
   - service.yaml
@@ -21,7 +24,9 @@ namespace: fake-namespace
 
 namePrefix: amt-
 
-commonLabels:
-  minbzk.github.io/name: amt
+labels:
+  - pairs:
+      minbzk.github.io/name: amt
+    includeSelectors: true
 
 buildMetadata: [originAnnotations]

@@ -1,0 +1,7 @@
+nameReference:
+  - kind: Cluster
+    group: postgresql.cnpg.io
+    version: v1
+    fieldSpecs:
+      - path: spec/cluster/name
+        kind: ScheduledBackup

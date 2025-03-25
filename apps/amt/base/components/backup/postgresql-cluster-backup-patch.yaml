@@ -1,0 +1,14 @@
+# note: this file is meant as patch to be applied on top of the postgres-cluster.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-db
+spec:
+  backup:
+    retentionPolicy: "7d"
+    barmanObjectStore:
+      destinationPath: "https://aivalidation.blob.core.windows.net/ai-validation/postgres-backups"
+      azureCredentials:
+        connectionString:
+          name: azure-backup-secret
+          key: AZURE_CONNECTION_STRING

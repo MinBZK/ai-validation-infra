@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - postgresql-backup.yaml
+
+patches:
+  - path: postgresql-cluster-backup-patch.yaml
+    target:
+      kind: Cluster
+      name: cluster-db

@@ -6,26 +6,21 @@ spec:
   instances: 1
   enablePDB: false
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
-
   bootstrap:
     initdb:
       database: amt
       owner: amt
       secret:
         name: sec-postgres
-
   storage:
     storageClass: managed-csi-premium
     size: 2Gi
-
   enableSuperuserAccess: true
   superuserSecret:
     name: sec-postgres-super
-
   postgresql:
     parameters:
       shared_buffers: "128MB"
-
   resources:
     requests:
       memory: "512Mi"

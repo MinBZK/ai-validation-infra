@@ -16,3 +16,5 @@ htmlcov/
 
 # Intellij IDE
 .idea/
+/apps/amt/overlays/production/plain/
+/apps/amt/overlays/bzk/plain/

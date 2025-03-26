@@ -11,6 +11,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.10"
 checkov = "^3.2.100"
+pyyaml = "^6.0.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.1.1"

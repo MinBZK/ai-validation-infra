@@ -16,6 +16,10 @@ creation_rules:
     encrypted_regex: ^(data|stringData)$
     age: "age1y0deq3t66yld72t4p8eawngpreffrsvztaffhj7f3wccercdx4psy5mvl7"
 
+  - path_regex: apps/amt/overlays/production/plain/secret.*
+    encrypted_regex: ^(data|stringData)$
+    age: "age1y0deq3t66yld72t4p8eawngpreffrsvztaffhj7f3wccercdx4psy5mvl7"
+
   - path_regex: apps/amt/overlays/sandbox/secret.*
     encrypted_regex: ^(data|stringData)$
     age: "age1tzxxf0sp4hpyqygwzwnuj4lrhn33c2kq4yce9w8my84vpvx23duscc9qgc"

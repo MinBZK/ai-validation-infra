@@ -26,6 +26,14 @@ images:
 
 patches:
   - target:
+      kind: Cluster
+      name: cluster-db
+    patch: |
+      - op: replace
+        path: /spec/backup/barmanObjectStore/destinationPath
+        # the namespace is not included in the backup path and we can not specify the filename at the moment, so we change the path to avoid collisions
+        value: "https://aivalidation.blob.core.windows.net/ai-validation/postgres-backups-bzk"
+  - target:
       kind: Ingress
       name: ing
     patch: |

@@ -13,12 +13,12 @@ resources:
 
 commonAnnotations:
   commithash: 1094faa50c7faad46dc932ff3b86aeb961c9fe6f
-  minbzk.github.io/version: pr-504
+  minbzk.github.io/version: pr-518
 
 images:
   - name: amt-image
     newName: ghcr.io/minbzk/amt
-    newTag: pr-504@sha256:4737b4e4409497dd61f549da9671acbeeb71bc04c3dcb92beb1b2b466547085a
+    newTag: pr-518@sha256:fbf045743352077cbfbc6a3debf1f78d44cdb93cab2e4c6cc117a0b93fa0804d
 
 patches:
   - target:

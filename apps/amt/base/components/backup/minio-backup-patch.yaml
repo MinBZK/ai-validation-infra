@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl-minio
+spec:
+  template:
+    spec:
+      containers:
+        # Add backup sidecar container
+        - name: backup
+          image: ubuntu:latest # TODO: create a custom backup image instead of an install script
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 256Mi
+              cpu: 50m
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            # TODO: This value should be updated (include the nameprefix) by a replacement transformer
+            - name: MINIO_DEPLOYMENT
+              value: dpl-minio
+            - name: AZURE_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: azure-backup-secret
+                  key: AZURE_CONNECTION_STRING
+            - name: AZURE_CONTAINER_NAME
+              value: "ai-validation"
+          volumeMounts:
+            - name: minio-pv-storage
+              mountPath: /data
+              readOnly: true
+            - name: backup-scripts
+              mountPath: /scripts
+          command: ["/bin/bash"]
+          args: ["-c", "./scripts/startup.sh"]
+      volumes:
+        - name: backup-scripts
+          configMap:
+            name: minio-backup-scripts
+            defaultMode: 0755

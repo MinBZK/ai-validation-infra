@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minio-backup-scripts
+data:
+  backup.sh: |
+    #!/bin/bash
+
+    # Set variables
+    DATE=$(date +%Y-%m-%d)
+    CONNECTION_STRING="$AZURE_CONNECTION_STRING"
+    AZURE_STORAGE_ACCOUNT=$(echo "$CONNECTION_STRING" | grep -oP 'AccountName=\K[^;]+')
+    BACKUP_NAME="${NAMESPACE}-${MINIO_DEPLOYMENT}-${DATE}.tar.gz"
+
+    echo "Starting backup at $(date)"
+    echo "Creating backup: $BACKUP_NAME"
+    cd /data
+    tar -czf /tmp/$BACKUP_NAME .
+
+    echo "Uploading backup to Azure Blob Storage..."
+    az storage blob upload \
+      --connection-string "$CONNECTION_STRING" \
+      --container-name $AZURE_CONTAINER_NAME \
+      --name $BACKUP_NAME \
+      --file /tmp/$BACKUP_NAME
+
+    rm /tmp/$BACKUP_NAME
+
+    # Clean up old backups (older than 5 days)
+    RETENTION_DAYS=5
+    CUTOFF_DATE=$(date -d "$RETENTION_DAYS days ago" +%Y-%m-%d)
+    BACKUP_PREFIX="${NAMESPACE}-${MINIO_DEPLOYMENT}-"
+
+    echo "Cleaning up backups older than $CUTOFF_DATE"
+    BLOBS=$(az storage blob list \
+      --connection-string "$CONNECTION_STRING" \
+      --container-name $AZURE_CONTAINER_NAME \
+      --prefix $BACKUP_PREFIX \
+      --output tsv --query "[].name")
+
+    for BLOB in $BLOBS; do
+      BLOB_DATE=$(echo $BLOB | grep -oP "\d{4}-\d{2}-\d{2}")
+      if [[ "$BLOB_DATE" < "$CUTOFF_DATE" ]]; then
+        echo "Deleting old backup: $BLOB"
+        az storage blob delete \
+          --connection-string "$CONNECTION_STRING" \
+          --container-name $AZURE_CONTAINER_NAME \
+          --name $BLOB
+      fi
+    done
+
+    echo "Backup process completed successfully at $(date)"
+  startup.sh: |
+    #!/bin/sh
+    export DEBIAN_FRONTEND=noninteractive
+    echo "Setting up automatic backups to Azure..."
+    apt-get update && apt-get install -y \
+    curl \
+    cron
+    # Install Azure CLI
+    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    echo "Setting up backup cronjob to run at 2 AM daily..."
+    echo "0 0 * * * /scripts/backup.sh" > /etc/crontab
+    echo "Backup configuration completed. Daily backups will run at 2 AM."
+    crontab /etc/crontab
+    cron -f

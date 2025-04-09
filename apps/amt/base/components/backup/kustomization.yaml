@@ -3,9 +3,14 @@ kind: Component
 
 resources:
   - postgresql-backup.yaml
+  - minio-backup-scripts.yaml
 
 patches:
   - path: postgresql-cluster-backup-patch.yaml
     target:
       kind: Cluster
       name: cluster-db
+  - path: minio-backup-patch.yaml
+    target:
+      kind: Deployment
+      name: dpl-minio

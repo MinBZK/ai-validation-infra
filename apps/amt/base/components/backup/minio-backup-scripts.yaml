@@ -39,19 +39,40 @@ data:
       --output tsv --query "[].name")
 
     for BLOB in $BLOBS; do
+      # Extract date from blob name
       BLOB_DATE=$(echo $BLOB | grep -oP "\d{4}-\d{2}-\d{2}")
-      if [[ "$BLOB_DATE" < "$CUTOFF_DATE" ]]; then
-        echo "Deleting old backup: $BLOB"
+
+      # Check if date was successfully extracted
+      if [[ -z "$BLOB_DATE" ]]; then
+        echo "Warning: Could not extract date from blob: $BLOB - skipping"
+        continue
+      fi
+
+      # Convert both dates to timestamps for reliable comparison
+      BLOB_TIMESTAMP=$(date -d "$BLOB_DATE" +%s 2>/dev/null)
+      CUTOFF_TIMESTAMP=$(date -d "$CUTOFF_DATE" +%s 2>/dev/null)
+
+      # Check if date conversion was successful
+      if [[ -z "$BLOB_TIMESTAMP" || -z "$CUTOFF_TIMESTAMP" ]]; then
+        echo "Warning: Invalid date format for blob: $BLOB - skipping"
+        continue
+      fi
+
+      # Compare timestamps
+      if [[ $BLOB_TIMESTAMP -lt $CUTOFF_TIMESTAMP ]]; then
+        echo "Deleting old backup: $BLOB (date: $BLOB_DATE)"
         az storage blob delete \
           --connection-string "$CONNECTION_STRING" \
           --container-name $AZURE_CONTAINER_NAME \
           --name $BLOB
+      else
+        echo "Keeping backup: $BLOB (date: $BLOB_DATE)"
       fi
     done
 
     echo "Backup process completed successfully at $(date)"
   startup.sh: |
-    #!/bin/sh
+    #!/bin/bash
     export DEBIAN_FRONTEND=noninteractive
     echo "Setting up automatic backups to Azure..."
     apt-get update && apt-get install -y \
@@ -60,7 +81,6 @@ data:
     # Install Azure CLI
     curl -sL https://aka.ms/InstallAzureCLIDeb | bash
     echo "Setting up backup cronjob to run at 2 AM daily..."
-    echo "0 0 * * * /scripts/backup.sh" > /etc/crontab
+    echo "0 2 * * * /scripts/backup.sh 2>&1 | tee -a /proc/1/fd/1" | crontab -
     echo "Backup configuration completed. Daily backups will run at 2 AM."
-    crontab /etc/crontab
     cron -f

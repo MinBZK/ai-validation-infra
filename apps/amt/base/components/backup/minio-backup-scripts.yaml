@@ -55,10 +55,7 @@ data:
       --output tsv --query "[].name")
 
     for BLOB in $BLOBS; do
-      # Extract date from blob name
       BLOB_DATE=$(echo $BLOB | grep -oP "\d{4}-\d{2}-\d{2}")
-
-      # Check if date was successfully extracted
       if [[ -z "$BLOB_DATE" ]]; then
         echo "Warning: Could not extract date from blob: $BLOB - skipping"
         continue
@@ -68,13 +65,11 @@ data:
       BLOB_TIMESTAMP=$(date -d "$BLOB_DATE" +%s 2>/dev/null)
       CUTOFF_TIMESTAMP=$(date -d "$CUTOFF_DATE" +%s 2>/dev/null)
 
-      # Check if date conversion was successful
       if [[ -z "$BLOB_TIMESTAMP" || -z "$CUTOFF_TIMESTAMP" ]]; then
         echo "Warning: Invalid date format for blob: $BLOB - skipping"
         continue
       fi
 
-      # Compare timestamps
       if [[ $BLOB_TIMESTAMP -lt $CUTOFF_TIMESTAMP ]]; then
         echo "Deleting old backup: $BLOB (date: $BLOB_DATE)"
         az storage blob delete \
@@ -87,6 +82,74 @@ data:
     done
 
     echo "Backup process completed successfully at $(date)"
+
+  restore.sh: |
+    #!/bin/bash
+    set -e  # Exit immediately if a command exits with a non-zero status
+
+    BACKUP_PREFIX="${NAMESPACE}-${MINIO_DEPLOYMENT}-"
+
+    list_backups() {
+      echo "Available backups in Azure storage:"
+      az storage blob list \
+        --connection-string "$AZURE_CONNECTION_STRING" \
+        --container-name $AZURE_CONTAINER_NAME \
+        --prefix $BACKUP_PREFIX \
+        --output tsv --query "[].name" | sort -r
+    }
+
+    if [ $# -eq 0 ]; then
+      echo "Usage: $0 <backup-name>"
+      echo "Example: $0 ${BACKUP_PREFIX}2025-04-11.tar.gz"
+      echo ""
+      list_backups
+      exit 1
+    fi
+
+    BACKUP_NAME=$1
+    TARGET_DIR="/data"
+    TEMP_DIR="/tmp/minio-restore"
+
+    # Check if the blob exists
+    if ! az storage blob exists \
+         --connection-string "$AZURE_CONNECTION_STRING" \
+         --container-name $AZURE_CONTAINER_NAME \
+         --name "$BACKUP_NAME" \
+         --query "exists" -o tsv | grep -q "True"; then
+      echo "Error: Backup '$BACKUP_NAME' not found in Azure storage!"
+      list_backups
+      exit 1
+    fi
+
+    # Check if data directory is empty
+    if [ "$(ls -A $TARGET_DIR)" ]; then
+      echo "Warning: The data directory ($TARGET_DIR) is not empty."
+      read -p "Proceeding will overwrite existing data. Continue? (y/N): " confirm
+      if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+        echo "Restore operation cancelled."
+        exit 0
+      fi
+    fi
+
+    # Create temp directory
+    mkdir -p $TEMP_DIR
+
+    echo "Downloading backup '$BACKUP_NAME' from Azure Blob Storage..."
+    az storage blob download \
+      --connection-string "$AZURE_CONNECTION_STRING" \
+      --container-name $AZURE_CONTAINER_NAME \
+      --name "$BACKUP_NAME" \
+      --file "$TEMP_DIR/$BACKUP_NAME" \
+      --no-progress
+
+    echo "Extracting backup to data directory..."
+    tar -xzf "$TEMP_DIR/$BACKUP_NAME" -C $TARGET_DIR
+
+    # Cleanup
+    rm -rf $TEMP_DIR
+
+    echo "Restore completed successfully at $(date)"
+    echo "Note: You may need to restart your MinIO server for changes to take effect."
 
   startup.sh: |
     #!/bin/bash
@@ -119,4 +182,5 @@ data:
     echo "0 2 * * * /bin/bash -c 'source /var/lib/backup/backup.env && /scripts/backup.sh' 2>&1 | tee -a /proc/1/fd/1" | crontab -
 
     echo "Backup configuration completed. Daily backups will run at 2 AM."
+    echo "To restore a backup, run: /scripts/restore.sh <backup-name>"
     cron -f

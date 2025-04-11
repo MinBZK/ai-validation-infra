@@ -5,18 +5,27 @@ metadata:
 data:
   backup.sh: |
     #!/bin/bash
+    set -e  # Exit immediately if a command exits with a non-zero status
 
     # Source environment variables if the file exists
     if [ -f /var/lib/backup/backup.env ]; then
       source /var/lib/backup/backup.env
     else
-      echo "Warning: Environment file not found at /var/lib/backup/backup.env!"
+      echo "Error: Environment file not found at /var/lib/backup/backup.env!"
+      exit 1
     fi
+
+    # Check for required environment variables
+    for VAR in NAMESPACE MINIO_DEPLOYMENT AZURE_CONNECTION_STRING AZURE_CONTAINER_NAME; do
+      if [ -z "${!VAR}" ]; then
+        echo "Error: Required environment variable $VAR is not set!"
+        exit 1
+      fi
+    done
 
     # Set variables
     DATE=$(date +%Y-%m-%d)
-    CONNECTION_STRING="$AZURE_CONNECTION_STRING"
-    AZURE_STORAGE_ACCOUNT=$(echo "$CONNECTION_STRING" | grep -oP 'AccountName=\K[^;]+')
+    AZURE_STORAGE_ACCOUNT=$(echo "$AZURE_CONNECTION_STRING" | grep -oP 'AccountName=\K[^;]+')
     BACKUP_NAME="${NAMESPACE}-${MINIO_DEPLOYMENT}-${DATE}.tar.gz"
 
     echo "Starting backup at $(date)"
@@ -26,7 +35,7 @@ data:
 
     echo "Uploading backup to Azure Blob Storage..."
     az storage blob upload \
-      --connection-string "$CONNECTION_STRING" \
+      --connection-string "$AZURE_CONNECTION_STRING" \
       --container-name $AZURE_CONTAINER_NAME \
       --name $BACKUP_NAME \
       --file /tmp/$BACKUP_NAME
@@ -40,7 +49,7 @@ data:
 
     echo "Cleaning up backups older than $CUTOFF_DATE"
     BLOBS=$(az storage blob list \
-      --connection-string "$CONNECTION_STRING" \
+      --connection-string "$AZURE_CONNECTION_STRING" \
       --container-name $AZURE_CONTAINER_NAME \
       --prefix $BACKUP_PREFIX \
       --output tsv --query "[].name")
@@ -69,7 +78,7 @@ data:
       if [[ $BLOB_TIMESTAMP -lt $CUTOFF_TIMESTAMP ]]; then
         echo "Deleting old backup: $BLOB (date: $BLOB_DATE)"
         az storage blob delete \
-          --connection-string "$CONNECTION_STRING" \
+          --connection-string "$AZURE_CONNECTION_STRING" \
           --container-name $AZURE_CONTAINER_NAME \
           --name $BLOB
       else
@@ -81,6 +90,7 @@ data:
 
   startup.sh: |
     #!/bin/bash
+    set -e  # Exit immediately if a command exits with a non-zero status
     export DEBIAN_FRONTEND=noninteractive
     echo "Setting up automatic backups to Azure..."
     apt-get update && apt-get install -y \
@@ -93,9 +103,17 @@ data:
     # Create directory for environment file if it doesn't exist
     mkdir -p /var/lib/backup
 
-    # Export all relevant environment variables to a file
+    # Export all relevant environment variables to a file with more explicit patterns
     echo "Saving environment variables to /var/lib/backup/backup.env"
-    env | grep -E 'NAMESPACE|MINIO_DEPLOYMENT|AZURE|CONNECTION_STRING' > /var/lib/backup/backup.env
+    env | grep -E '^(NAMESPACE|MINIO_DEPLOYMENT|AZURE_CONNECTION_STRING|AZURE_CONTAINER_NAME)=' > /var/lib/backup/backup.env
+
+    # Verify that all required variables are captured
+    for VAR in NAMESPACE MINIO_DEPLOYMENT AZURE_CONNECTION_STRING AZURE_CONTAINER_NAME; do
+      if ! grep -q "^$VAR=" /var/lib/backup/backup.env; then
+        echo "Error: Required environment variable $VAR is not found in the environment!"
+        exit 1
+      fi
+    done
 
     echo "Setting up backup cronjob to run at 2 AM daily..."
     echo "0 2 * * * /bin/bash -c 'source /var/lib/backup/backup.env && /scripts/backup.sh' 2>&1 | tee -a /proc/1/fd/1" | crontab -

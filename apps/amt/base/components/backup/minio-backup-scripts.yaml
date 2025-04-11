@@ -6,6 +6,13 @@ data:
   backup.sh: |
     #!/bin/bash
 
+    # Source environment variables if the file exists
+    if [ -f /var/lib/backup/backup.env ]; then
+      source /var/lib/backup/backup.env
+    else
+      echo "Warning: Environment file not found at /var/lib/backup/backup.env!"
+    fi
+
     # Set variables
     DATE=$(date +%Y-%m-%d)
     CONNECTION_STRING="$AZURE_CONNECTION_STRING"
@@ -71,6 +78,7 @@ data:
     done
 
     echo "Backup process completed successfully at $(date)"
+
   startup.sh: |
     #!/bin/bash
     export DEBIAN_FRONTEND=noninteractive
@@ -78,9 +86,19 @@ data:
     apt-get update && apt-get install -y \
     curl \
     cron
+
     # Install Azure CLI
     curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+    # Create directory for environment file if it doesn't exist
+    mkdir -p /var/lib/backup
+
+    # Export all relevant environment variables to a file
+    echo "Saving environment variables to /var/lib/backup/backup.env"
+    env | grep -E 'NAMESPACE|MINIO_DEPLOYMENT|AZURE|CONNECTION_STRING' > /var/lib/backup/backup.env
+
     echo "Setting up backup cronjob to run at 2 AM daily..."
-    echo "0 2 * * * /scripts/backup.sh 2>&1 | tee -a /proc/1/fd/1" | crontab -
+    echo "0 2 * * * /bin/bash -c 'source /var/lib/backup/backup.env && /scripts/backup.sh' 2>&1 | tee -a /proc/1/fd/1" | crontab -
+
     echo "Backup configuration completed. Daily backups will run at 2 AM."
     cron -f

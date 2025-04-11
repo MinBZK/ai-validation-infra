@@ -1,0 +1,20 @@
+# Only create this resource when you need to restore a database from the azure backup
+apiVersion: postgresql.cnpg.io/v1
+kind: Restore
+metadata:
+  name: cluster-db-restore
+spec:
+  cluster:
+    name: cluster-db
+  source:
+    barmanObjectStore:
+      serverName: cluster-db
+      # make sure this is the correct path!
+      destinationPath: "https://aivalidation.blob.core.windows.net/ai-validation/postgres-backups"
+      azureCredentials:
+        connectionString:
+          key: AZURE_CONNECTION_STRING
+          name: azure-backup-secret
+      data:
+        # Specific backup to restore
+        backupID: "20250404T000000"

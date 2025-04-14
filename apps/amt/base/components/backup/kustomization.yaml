@@ -10,6 +10,11 @@ patches:
     target:
       kind: Cluster
       name: cluster-db
+# Only uncomment this patch within a new cluster, adding bootstrap to an existing deployment can cause problems!
+#  - path: postgresql-cluster-bootstrap-patch.yaml
+#    target:
+#      kind: Cluster
+#      name: cluster-db
   - path: minio-backup-patch.yaml
     target:
       kind: Deployment

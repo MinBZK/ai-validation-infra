@@ -5,7 +5,6 @@ metadata:
 data:
   backup.sh: |
     #!/bin/bash
-    set -e  # Exit immediately if a command exits with a non-zero status
 
     # Source environment variables if the file exists
     if [ -f /var/lib/backup/backup.env ]; then
@@ -85,7 +84,6 @@ data:
 
   restore.sh: |
     #!/bin/bash
-    set -e  # Exit immediately if a command exits with a non-zero status
 
     BACKUP_PREFIX="${NAMESPACE}-${MINIO_DEPLOYMENT}-"
 
@@ -153,7 +151,7 @@ data:
 
   startup.sh: |
     #!/bin/bash
-    set -e  # Exit immediately if a command exits with a non-zero status
+
     export DEBIAN_FRONTEND=noninteractive
     echo "Setting up automatic backups to Azure..."
     apt-get update && apt-get install -y \
@@ -168,7 +166,7 @@ data:
 
     # Export all relevant environment variables to a file with more explicit patterns
     echo "Saving environment variables to /var/lib/backup/backup.env"
-    env | grep -E '^(NAMESPACE|MINIO_DEPLOYMENT|AZURE_CONNECTION_STRING|AZURE_CONTAINER_NAME)=' > /var/lib/backup/backup.env
+    env | grep -E '^(NAMESPACE|MINIO_DEPLOYMENT|AZURE_CONNECTION_STRING|AZURE_CONTAINER_NAME)=' | sed 's/=\(.*\)/="\1"/' > /var/lib/backup/backup.env
 
     # Verify that all required variables are captured
     for VAR in NAMESPACE MINIO_DEPLOYMENT AZURE_CONNECTION_STRING AZURE_CONTAINER_NAME; do

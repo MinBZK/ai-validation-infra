@@ -18,9 +18,9 @@ buildMetadata: [originAnnotations]
 
 commonAnnotations:
   commithash: b5967d17d0433266a40a3f391d34b09b386e9ee8
-  minbzk.github.io/version: main
+  minbzk.github.io/version: v.1.2.7
 
 images:
   - name: ai-verordening-beslishulp-image
     newName: ghcr.io/minbzk/ai-verordening-beslishulp
-    newTag: main@sha256:b98a502e6e94c3fbfbb9e046b439b5ef7a9305d450e4eee14f3dd9983dc755fb
+    newTag: main@sha256:0e6231b1926c7760fca6b1901e082c902b36a1f8ff0fe00cfe15bc538ba1e1fc

@@ -18,7 +18,7 @@ buildMetadata: [originAnnotations]
 
 commonAnnotations:
   commithash: b5967d17d0433266a40a3f391d34b09b386e9ee8
-  minbzk.github.io/version: v.1.2.7
+  minbzk.github.io/version: v.1.2.8
 
 images:
   - name: ai-verordening-beslishulp-image

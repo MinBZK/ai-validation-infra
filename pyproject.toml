@@ -17,8 +17,8 @@ pyyaml = "^6.0.2"
 pytest = "^8.1.1"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.6.2"
-pre-commit = "^3.7.0"
+ruff = "^0.12.4"
+pre-commit = "^4.2.0"
 
 [tool.poetry.urls]
 "Issue Tracker" = "https://github.com/MinBZK/ai-validation-infra/issues"

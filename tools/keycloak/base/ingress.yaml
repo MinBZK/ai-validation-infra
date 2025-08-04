@@ -4,6 +4,8 @@ metadata:
   name: ing
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    # https://stackoverflow.com/questions/56126864/why-do-i-get-502-when-trying-to-authenticate
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
 spec:
   ingressClassName: nginx
   rules:

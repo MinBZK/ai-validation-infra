@@ -12,7 +12,7 @@ jobs:
   lint-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install poetry
         run: pipx install poetry
@@ -35,7 +35,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -57,7 +57,7 @@ jobs:
   lint-config:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Run Trivy vulnerability scanner (secrets)
         uses: aquasecurity/trivy-action@master
@@ -80,12 +80,12 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: generate PR branch manifest
         run: script/generate-manifests.sh -d ./pr-manifests
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: main
           path: main-repo
@@ -141,7 +141,7 @@ jobs:
     needs: [lint-config, lint-test, test]
     if: ${{ always() }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 10
 

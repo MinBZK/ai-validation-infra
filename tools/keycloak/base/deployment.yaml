@@ -66,6 +66,8 @@ spec:
                   key: password
             - name: ORGANIZATION
               value: "Algorithm Management Toolkit"
+            - name: KC_LOG_LEVEL
+              value: "DEBUG"
           resources:
             limits:
               memory: "1Gi"

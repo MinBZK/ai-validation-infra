@@ -11,7 +11,6 @@ resources:
   - secret-oidc.yaml
   - secret-minio.yaml
   - secret-azure-backup.yaml
-  - db-nodeport.yaml
 
 components:
   - ../../base/components/backup

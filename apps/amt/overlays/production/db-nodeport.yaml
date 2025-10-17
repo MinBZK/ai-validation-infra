@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-nodeport
+  namespace: amt  # Adjust if your namespace is different
+spec:
+  type: NodePort
+  selector:
+    cnpg.io/cluster: cluster-db
+    role: primary  # Targets the primary/read-write instance
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+      nodePort: 30432  # Optional: specify a port in range 30000-32767, or omit to auto-assign

@@ -6,7 +6,7 @@ import yaml
 
 @pytest.fixture
 def manifest() -> list[dict]:
-    result = subprocess.run(["kubectl", "kustomize", "apps/amt/overlays/production"], capture_output=True)  # noqa: S603, S607
+    result = subprocess.run(["kubectl", "kustomize", "apps/amt/overlays/production"], capture_output=True)  # noqa: S607
     manifest = result.stdout.decode("utf-8")
     yamls = yaml.safe_load_all(manifest)
     return list(yamls)
@@ -102,5 +102,5 @@ def test_ingress(manifest):
 def test_service(manifest):
     services = [m for m in manifest if m["kind"] == "Service"]
 
-    assert len(services) == 3
+    assert len(services) == 4
     assert services[0]["spec"]["ports"][0]["port"] == 8000

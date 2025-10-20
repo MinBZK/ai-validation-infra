@@ -5,6 +5,7 @@ namespace: tn-ai-validation-amt
 
 resources:
   - ../../base
+  - ../../migration/chivel/overlays/production
   - ingress-redirect.yaml
   - secret-pgadmin.yaml
   - secret-postgres.yaml

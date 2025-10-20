@@ -92,7 +92,7 @@ def test_persistant_volume_claim(manifest):
 def test_ingress(manifest):
     ingresses = [m for m in manifest if m["kind"] == "Ingress"]
 
-    assert len(ingresses) == 2
+    assert len(ingresses) == 3
     assert ingresses[0]["spec"]["rules"][0]["host"] == "amt.prd.apps.digilab.network"
     assert ingresses[0]["spec"]["rules"][0]["http"]["paths"][0]["pathType"] == "Prefix"
     assert ingresses[1]["spec"]["rules"][0]["host"] == "pgadmin.prd.apps.digilab.network"
@@ -102,5 +102,5 @@ def test_ingress(manifest):
 def test_service(manifest):
     services = [m for m in manifest if m["kind"] == "Service"]
 
-    assert len(services) == 4
+    assert len(services) == 3
     assert services[0]["spec"]["ports"][0]["port"] == 8000

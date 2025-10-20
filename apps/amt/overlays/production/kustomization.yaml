@@ -5,13 +5,13 @@ namespace: tn-ai-validation-amt
 
 resources:
   - ../../base
+  - ingress-redirect.yaml
   - secret-pgadmin.yaml
   - secret-postgres.yaml
   - secret-postgres-super.yaml
   - secret-oidc.yaml
   - secret-minio.yaml
   - secret-azure-backup.yaml
-  - db-nodeport.yaml
 
 components:
   - ../../base/components/backup

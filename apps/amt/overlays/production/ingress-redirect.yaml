@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ing-redirect
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://amt.rig.prd1.gn2.quattro.rijksapps.nl/"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: amt-test.prd.apps.digilab.network
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: svc
+            port:
+              number: 8000
+  tls:
+  - hosts:
+    - amt-test.prd.apps.digilab.network
+    secretName: amt-test-tls

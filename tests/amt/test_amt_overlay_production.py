@@ -30,7 +30,7 @@ def test_kinds(manifest):
 def test_labeling(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
 
-    assert len(deployments) == 3
+    assert len(deployments) == 4
 
     deployment = deployments[0]
     assert deployment["metadata"]["labels"]["minbzk.github.io/name"] == "amt"
@@ -47,7 +47,7 @@ def test_environment(manifest):
 def test_namespace(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
 
-    assert len(deployments) == 3
+    assert len(deployments) == 4
 
     deployment = deployments[0]
     assert deployment["metadata"]["namespace"] == "tn-ai-validation-amt"
@@ -72,7 +72,7 @@ def test_port_mappings(manifest):
 def test_deployment(manifest):
     deployments = [m for m in manifest if m["kind"] == "Deployment"]
 
-    assert len(deployments) == 3
+    assert len(deployments) == 4
 
 
 def test_horizontal_pod_autoscaler(manifest):
@@ -92,7 +92,7 @@ def test_persistant_volume_claim(manifest):
 def test_ingress(manifest):
     ingresses = [m for m in manifest if m["kind"] == "Ingress"]
 
-    assert len(ingresses) == 3
+    assert len(ingresses) == 4
     assert ingresses[0]["spec"]["rules"][0]["host"] == "amt.prd.apps.digilab.network"
     assert ingresses[0]["spec"]["rules"][0]["http"]["paths"][0]["pathType"] == "Prefix"
     assert ingresses[1]["spec"]["rules"][0]["host"] == "pgadmin.prd.apps.digilab.network"
@@ -102,5 +102,5 @@ def test_ingress(manifest):
 def test_service(manifest):
     services = [m for m in manifest if m["kind"] == "Service"]
 
-    assert len(services) == 3
+    assert len(services) == 4
     assert services[0]["spec"]["ports"][0]["port"] == 8000

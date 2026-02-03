@@ -37,6 +37,9 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: amt.prd.apps.digilab.network
+      - op: add
+        path: /metadata/annotations/nginx.ingress.kubernetes.io~1permanent-redirect
+        value: "https://amt.rijksapp.nl/"
   - target:
       kind: Ingress
       name: ing-pgadmin

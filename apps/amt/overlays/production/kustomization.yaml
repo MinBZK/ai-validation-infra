@@ -47,3 +47,41 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: pgadmin.prd.apps.digilab.network
+  # Scale down all deployments to 0 replicas
+  - target:
+      kind: Deployment
+      name: dpl
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  - target:
+      kind: Deployment
+      name: dpl-pgadmin
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  - target:
+      kind: Deployment
+      name: dpl-minio
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  # Scale down PostgreSQL cluster to 0 instances
+  - target:
+      kind: Cluster
+      name: cluster-db
+    patch: |
+      - op: replace
+        path: /spec/instances
+        value: 0
+  # Set HPA minReplicas to 0 to prevent auto-scaling
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: hpa
+    patch: |
+      - op: replace
+        path: /spec/minReplicas
+        value: 0

@@ -4,7 +4,7 @@ metadata:
   name: ing-redirect
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/permanent-redirect: "https://amt.rig.prd1.gn2.quattro.rijksapps.nl/"
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://amt.rijksapp.nl/"
 spec:
   ingressClassName: nginx
   rules:

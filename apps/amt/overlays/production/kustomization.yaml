@@ -77,11 +77,13 @@ patches:
       - op: replace
         path: /spec/instances
         value: 0
-  # Set HPA minReplicas to 0 to prevent auto-scaling
+  # Delete the HPA to prevent auto-scaling when scaled to zero
   - target:
       kind: HorizontalPodAutoscaler
       name: hpa
     patch: |
-      - op: replace
-        path: /spec/minReplicas
-        value: 0
+      $patch: delete
+      apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      metadata:
+        name: hpa

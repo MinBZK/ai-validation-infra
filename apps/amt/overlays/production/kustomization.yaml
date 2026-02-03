@@ -69,14 +69,14 @@ patches:
       - op: replace
         path: /spec/replicas
         value: 0
-  # Scale down PostgreSQL cluster to 0 instances
+  # Hibernate PostgreSQL cluster (preserves PVCs/data)
   - target:
       kind: Cluster
       name: cluster-db
     patch: |
-      - op: replace
-        path: /spec/instances
-        value: 0
+      - op: add
+        path: /metadata/annotations/cnpg.io~1hibernation
+        value: "on"
   # Delete the HPA to prevent auto-scaling when scaled to zero
   - target:
       kind: HorizontalPodAutoscaler

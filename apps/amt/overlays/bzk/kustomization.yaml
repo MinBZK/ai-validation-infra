@@ -11,6 +11,7 @@ resources:
   - secret-oidc.yaml
   - secret-minio.yaml
   - secret-azure-backup.yaml
+  - networkpolicy-allow-amt.yaml
 
 components:
   - ../../base/components/backup

@@ -34,6 +34,10 @@ patches:
         path: /spec/backup/barmanObjectStore/destinationPath
         # the namespace is not included in the backup path and we can not specify the filename at the moment, so we change the path to avoid collisions
         value: "https://aivalidation.blob.core.windows.net/ai-validation/postgres-backups-bzk"
+      # Hibernate PostgreSQL cluster (preserves PVCs/data)
+      - op: add
+        path: /metadata/annotations/cnpg.io~1hibernation
+        value: "on"
   - target:
       kind: Ingress
       name: ing
@@ -44,6 +48,9 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: amt.bzk.apps.digilab.network
+      - op: add
+        path: /metadata/annotations/nginx.ingress.kubernetes.io~1permanent-redirect
+        value: "https://amt.bzk.rijksapp.nl/"
   - target:
       kind: Ingress
       name: ing-pgadmin
@@ -54,12 +61,40 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: pgadmin.bzk.apps.digilab.network
+  # Scale down all deployments to 0 replicas
   - target:
       kind: Deployment
       name: dpl
-    patch: |-
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
       - op: add
         path: "/spec/template/spec/containers/0/env/-"
         value:
           name: OIDC_DISCOVERY_URL
           value: "https://keycloak.apps.digilab.network/realms/Algoritmes-BZK/.well-known/openid-configuration"
+  - target:
+      kind: Deployment
+      name: dpl-pgadmin
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  - target:
+      kind: Deployment
+      name: dpl-minio
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  # Delete the HPA to prevent auto-scaling when scaled to zero
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: hpa
+    patch: |
+      $patch: delete
+      apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      metadata:
+        name: hpa

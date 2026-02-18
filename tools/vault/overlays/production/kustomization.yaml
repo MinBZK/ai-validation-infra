@@ -23,3 +23,11 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: vault.apps.digilab.network
+  # Scale down Vault to 0 replicas
+  - target:
+      kind: StatefulSet
+      name: vault
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0

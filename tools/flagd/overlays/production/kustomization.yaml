@@ -6,3 +6,13 @@ namePrefix: prod-
 
 resources:
   - ../../base
+
+patches:
+  # Scale down flagd deployment to 0 replicas
+  - target:
+      kind: Deployment
+      name: flagd
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0

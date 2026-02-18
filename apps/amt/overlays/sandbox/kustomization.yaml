@@ -41,3 +41,43 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: pgadmin.stag.apps.digilab.network
+  # Scale down all deployments to 0 replicas
+  - target:
+      kind: Deployment
+      name: dpl
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  - target:
+      kind: Deployment
+      name: dpl-pgadmin
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  - target:
+      kind: Deployment
+      name: dpl-minio
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  # Hibernate PostgreSQL cluster (preserves PVCs/data)
+  - target:
+      kind: Cluster
+      name: cluster-db
+    patch: |
+      - op: add
+        path: /metadata/annotations/cnpg.io~1hibernation
+        value: "on"
+  # Delete the HPA to prevent auto-scaling when scaled to zero
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: hpa
+    patch: |
+      $patch: delete
+      apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      metadata:
+        name: hpa

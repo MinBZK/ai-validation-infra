@@ -24,3 +24,19 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: wiki.apps.digilab.network
+  # Scale down wiki deployment to 0 replicas
+  - target:
+      kind: Deployment
+      name: dpl
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  # Hibernate PostgreSQL cluster (preserves PVCs/data)
+  - target:
+      kind: Cluster
+      name: cluster-db
+    patch: |
+      - op: add
+        path: /metadata/annotations/cnpg.io~1hibernation
+        value: "on"

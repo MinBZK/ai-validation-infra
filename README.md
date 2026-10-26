@@ -54,7 +54,7 @@ to install pinniped follow [pinniped install]( https://get.pinniped.dev) tutoria
 
 ### namespaces
 
-The AI Validation team has access to the following namespaces:
+The Digi Gilde team has access to the following namespaces:
 
 * tn-ai-validation-grafana: grafana dashboard for our team (managed by digilab)
 * tn-ai-validation-infra. general infra not managed by flux. currently runs [vault](https://vault.apps.digilab.network).
